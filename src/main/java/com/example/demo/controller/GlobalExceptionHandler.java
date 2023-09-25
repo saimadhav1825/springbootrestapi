@@ -7,6 +7,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,6 +33,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<BaseResponse> handleUserAlreadyExistsException(UserAlreadyExistsException ex) {
         return new ResponseEntity<>(new BaseResponse(false, ex.getMessage()), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<BaseResponse> handleUserNotFoundException(BadCredentialsException ex) {
+        return new ResponseEntity<>(new BaseResponse(false, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
 }

@@ -38,11 +38,8 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             token = authHeader.substring(7);
             username = jwtService.extractUsername(token);
         }
-        if (username == null) {
-            throw new JwtAuthenticationException("Invalid or missing token");
-        }
 
-        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(username);
             var isTokenValid = tokenRepository.findByToken(token)
                     .map(t -> !t.isExpired() && !t.isRevoked())

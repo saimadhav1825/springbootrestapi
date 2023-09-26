@@ -1,12 +1,20 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
 public class BaseResponse {
-    Boolean success;
-    String message;
+    private Boolean status;
+    private String message;
+
+    private Object data;
+
+    public BaseResponse(Boolean status, String message) {
+        this.status = status;
+        this.message = message;
+    }
 }

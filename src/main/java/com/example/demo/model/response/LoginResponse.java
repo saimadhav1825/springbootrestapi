@@ -9,12 +9,14 @@ import javax.management.ConstructorParameters;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginResponse  extends BaseResponse{
-    private String token;
+public class LoginResponse extends BaseResponse {
+    private String accessToken;
+    private String refreshToken;
 
-    // Constructor with success, message, and token
-    public LoginResponse(Boolean success, String message, String token) {
+    // Constructor with success, message, accessToken and refreshToken
+    public LoginResponse(Boolean success, String message, String accessToken, String refreshToken) {
         super(success, message);
-        this.token = token;
+        this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
     }
 }

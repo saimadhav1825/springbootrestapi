@@ -1,5 +1,6 @@
-package com.example.demo.config;
+package com.example.demo.service;
 
+import com.example.demo.config.UserInfoUserDetails;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,5 @@ public class UserInfoUserDetailsService implements UserDetailsService {
         Optional<User> userInfo = repository.findByEmailId(username);
         return userInfo.map(UserInfoUserDetails::new)
                 .orElseThrow(() -> new UsernameNotFoundException("user not found With This Mail" + username));
-
     }
 }

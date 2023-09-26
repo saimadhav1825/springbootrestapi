@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
+import java.util.List;
+
 
 @Getter
 @Setter
@@ -19,15 +21,6 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(name = "first_name", nullable = false)
-    @NotBlank(message = "First name is required")
-    @Size(min = 2, message = "First Name should have atleast 2 characters")
-    private String firstName;
-
-    @NotBlank(message = "Last name is required")
-    @Size(min = 2, message = "Last Name should have atleast 2 characters")
-    @Column(name = "last_name")
-    private String lastName;
 
     @Column(name = "email_id", unique = true)
     @NotBlank(message = "Enter Your Email")
@@ -43,4 +36,24 @@ public class User {
 
     @JsonIgnore
     private String role;
+
+    @Column(name = "userName")
+    private String userName="";
+
+    private Boolean isAccountVerified = false;
+
+    private Boolean isRegCompleted = false;
+
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
+
+    @Override
+    public String toString() {
+        // Exclude tokens from the toString() representation
+        return "User{" +
+                "id=" + id +
+                ", username='" + userName + '\'' +
+                // Other fields...
+                '}';
+    }
 }

@@ -26,6 +26,7 @@ public class UserController {
     public ResponseEntity<?> createAccount(@Valid @RequestBody RegistrationRequest registrationRequest) {
         return ResponseEntity.ok(userServiceImpl.createUser(registrationRequest));
     }
+
     @PostMapping("/addDisplayName")
     public ResponseEntity<?> displayName(@Valid @RequestBody DisplayNameRequest displayNameRequest) {
         return ResponseEntity.ok(userServiceImpl.addUserName(displayNameRequest));
@@ -35,10 +36,11 @@ public class UserController {
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthenticationRequest authRequest) {
         return ResponseEntity.ok(userServiceImpl.authenticateAndGetToken(authRequest));
     }
-   /* @PostMapping("/logout")
+
+    @PostMapping("/logout")
     public ResponseEntity<?> logout() {
-        return ResponseEntity.ok(userServiceImpl.authenticateAndGetToken(authRequest));
-    }*/
+        return ResponseEntity.ok("Success");
+    }
 
     @PostMapping("/refresh-token")
     public void refreshToken(
@@ -47,6 +49,7 @@ public class UserController {
     ) throws IOException {
         userServiceImpl.refreshToken(request, response);
     }
+
     @GetMapping("/home")
     public ResponseEntity<?> home() {
         return ResponseEntity.ok("HomeData");

@@ -1,7 +1,5 @@
 package com.example.demo.config;
 
-
-
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
@@ -27,7 +25,6 @@ public class S3Config {
     public AmazonS3 s3(){
         AWSCredentials awsCredentials=new BasicAWSCredentials(accessKey,secret);
         return AmazonS3ClientBuilder.standard().withRegion(region).withCredentials(new AWSStaticCredentialsProvider(awsCredentials)).build();
-
     }
 
 }

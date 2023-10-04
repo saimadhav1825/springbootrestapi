@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 
@@ -11,6 +12,7 @@ public class BaseResponse {
     private Boolean status;
     private String message;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object data;
 
     public BaseResponse(Boolean status, String message) {

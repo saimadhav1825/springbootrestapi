@@ -31,7 +31,7 @@ public class AWSSNSConfig {
     }
 
 
-    @Bean(name = "sessionCredentials")
+/*    @Bean(name = "sessionCredentials")
     public BasicSessionCredentials sessionCredentials() {
 
         AWSSecurityTokenServiceClient sts_client = (AWSSecurityTokenServiceClient) AWSSecurityTokenServiceClientBuilder.defaultClient();
@@ -51,5 +51,5 @@ public class AWSSNSConfig {
                 session_creds.getSecretAccessKey(),
                 session_creds.getSessionToken());
         return sessionCredentials;
-    }
+    }*/
 }

@@ -14,8 +14,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AmazonSNSPublisherService implements PublisherService {
+    @Override
+    public void publish(String subject, String body) throws Exception {
 
-    private AmazonSNS amazonSNS;
+    }
+
+  /*  private AmazonSNS amazonSNS;
     private String snsTopicDemoARN;
 
     @Autowired
@@ -43,5 +47,5 @@ public class AmazonSNSPublisherService implements PublisherService {
         }
         throw new RuntimeException("No matching topic supported!");
     }
-
+*/
 }

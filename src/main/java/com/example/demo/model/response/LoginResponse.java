@@ -12,7 +12,6 @@ import javax.management.ConstructorParameters;
 public class LoginResponse extends BaseResponse {
     private String accessToken;
     private String refreshToken;
-
     // Constructor with success, message, accessToken and refreshToken
     public LoginResponse(Boolean success, String message, String accessToken, String refreshToken) {
         super(success, message);

@@ -1,4 +1,4 @@
-package com.example.demo.controller;
+package com.example.demo.handler;
 
 import com.example.demo.exception.*;
 import com.example.demo.model.BaseResponse;
@@ -70,8 +70,10 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<BaseResponse> handleAccessDeniedException(AccessDeniedException ex) {
-        return new ResponseEntity<>(new BaseResponse(false, ex.getMessage()), HttpStatus.UNAUTHORIZED);
+    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
+        // Handle the JWT signature mismatch exception here and return an appropriate response.
+        // You can customize the response message and HTTP status code as needed.
+        return new ResponseEntity<>("Unauthorized: JWT signature mismatch", HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(JwtAuthenticationException.class)

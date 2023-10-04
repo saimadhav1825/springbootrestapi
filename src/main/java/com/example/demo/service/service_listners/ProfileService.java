@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.service.service_listners;
 
 import com.example.demo.model.User;
 

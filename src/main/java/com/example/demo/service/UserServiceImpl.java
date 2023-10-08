@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.enums.TokenType;
 import com.example.demo.exception.CustomException;
+import com.example.demo.exception.PhoneNumberValidationException;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.exception.UserAlreadyExistsException;
 import com.example.demo.model.BaseResponse;
@@ -10,11 +11,13 @@ import com.example.demo.model.User;
 import com.example.demo.model.request.AuthenticationRequest;
 import com.example.demo.model.request.DisplayNameRequest;
 import com.example.demo.model.request.RegistrationRequest;
+import com.example.demo.model.request.ResetPasswordRequest;
 import com.example.demo.model.response.LoginResponse;
 import com.example.demo.model.response.UserDetailsResponse;
 import com.example.demo.repository.TokenRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.service_listners.UserService;
+import com.example.demo.utils.ValidationUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,7 @@ import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
@@ -41,7 +45,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private TokenRepository tokenRepository;
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+
+    @Autowired
+    private OTPService otpService;
 
     @Override
     public BaseResponse createUser(RegistrationRequest registrationRequest) {
@@ -65,7 +72,7 @@ public class UserServiceImpl implements UserService {
     public BaseResponse addUserName(DisplayNameRequest displayNameRequest) {
         BaseResponse baseResponse;
         if (userRepository.findByUserName(displayNameRequest.getName()).isPresent()) {
-            throw new UserAlreadyExistsException("Name Already Took By SomeOne");
+            throw new UserAlreadyExistsException("Name Already Took By SomeOne Choose Some Other Name");
         } else {
             Optional<User> user = userRepository.findByEmailId(displayNameRequest.getEmailId());
             if (user.isPresent()) {
@@ -78,6 +85,43 @@ public class UserServiceImpl implements UserService {
                 throw new ResourceNotFoundException("Account Not Found With This Email " + displayNameRequest.getEmailId());
         }
         return baseResponse;
+    }
+
+    @Override
+    public BaseResponse phoneNumberOtpSend(String phoneNumber) {
+        if (ValidationUtils.isValidPhoneNumber(phoneNumber)) {
+            boolean isExist = userRepository.existsByPhoneNumber(phoneNumber);
+            if (isExist) {
+                //IF Phone Number Exist return Response Already Found
+                return new BaseResponse(false, "Already Account Exist With This Phone Number");
+            } else {
+                String otp = otpService.generate6DigitOTP();
+                //if Phone Number Not Exist Send Otp To User
+                return new BaseResponse(true, "Otp Sends Successfully To Your Phone Number " + otp);
+            }
+        } else throw new PhoneNumberValidationException("Invalid Phone Number");
+    }
+
+    @Override
+    public BaseResponse forgotPassword(String email) {
+        Optional<User> user = userRepository.findByEmailId(email);
+        if (user.isEmpty()) {
+            throw new ResourceNotFoundException("No Account With This Mail ID");
+        }
+        return new BaseResponse(true, "Temporary Password Sent To Your Mail");
+    }
+
+    @Override
+    public BaseResponse resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        Optional<User> user = userRepository.findByEmailId(resetPasswordRequest.getEmailId());
+        if (user.isEmpty()) {
+            throw new ResourceNotFoundException("No Account With This Mail ID");
+        }
+        //Verify TempPassword if Correct Save Password
+        String hashedPassword = passwordEncoder.encode(resetPasswordRequest.getPassword());
+        user.get().setPassword(hashedPassword);
+        userRepository.save(user.get());
+        return new BaseResponse(true, "Password Updated Successfully");
     }
 
     public BaseResponse authenticateAndGetToken(AuthenticationRequest authRequest) {

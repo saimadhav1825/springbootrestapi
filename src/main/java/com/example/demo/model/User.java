@@ -40,6 +40,9 @@ public class User {
     @Column(name = "userName")
     private String userName="";
 
+    @Column(name = "phoneNumber")
+    private String phoneNumber;
+
     private Boolean isAccountVerified = false;
 
     private Boolean isRegCompleted = false;

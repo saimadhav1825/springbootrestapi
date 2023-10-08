@@ -1,6 +1,5 @@
 package com.example.demo.filter;
 
-import com.example.demo.exception.JwtAuthenticationException;
 import com.example.demo.repository.TokenRepository;
 import com.example.demo.service.UserInfoUserDetailsService;
 import com.example.demo.service.JwtService;

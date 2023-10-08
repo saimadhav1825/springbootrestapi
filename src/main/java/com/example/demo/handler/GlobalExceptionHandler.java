@@ -82,4 +82,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
 
+    @ExceptionHandler(PhoneNumberValidationException.class)
+    public ResponseEntity<BaseResponse> handlePhoneNumberValidationException(PhoneNumberValidationException ex) {
+        return new ResponseEntity<>(new BaseResponse(false, ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 }

@@ -1,57 +1,64 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.BaseResponse;
-import com.example.demo.model.User;
-import com.example.demo.model.request.AuthenticationRequest;
-import com.example.demo.model.request.DisplayNameRequest;
-import com.example.demo.model.request.RegistrationRequest;
+import com.example.demo.model.request.*;
 import com.example.demo.service.UserServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+import static com.example.demo.ApiConstants.*;
+
 @RestController
-@RequestMapping("api/v1/user")
+@RequestMapping("api/v1/user/")
 public class UserController {
 
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @PostMapping("/registration")
+    @PostMapping("registration")
     public ResponseEntity<?> createAccount(@Valid @RequestBody RegistrationRequest registrationRequest) {
         return ResponseEntity.ok(userServiceImpl.createUser(registrationRequest));
     }
 
-    @PostMapping("/addDisplayName")
+    @PostMapping("addDisplayName")
     public ResponseEntity<?> displayName(@Valid @RequestBody DisplayNameRequest displayNameRequest) {
         return ResponseEntity.ok(userServiceImpl.addUserName(displayNameRequest));
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthenticationRequest authRequest) {
+    @PostMapping(LOGIN)
+    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authRequest) {
         return ResponseEntity.ok(userServiceImpl.authenticateAndGetToken(authRequest));
     }
 
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
-        return ResponseEntity.ok("Success");
-    }
-
-    @PostMapping("/refresh-token")
-    public void refreshToken(
-            HttpServletRequest request,
-            HttpServletResponse response
-    ) throws IOException {
+    @PostMapping("refresh-token")
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) {
         userServiceImpl.refreshToken(request, response);
     }
 
-    @GetMapping("/home")
-    public ResponseEntity<?> home() {
-        return ResponseEntity.ok("HomeData");
+    @PostMapping(PHONE_NUMBER_OTP)
+    public ResponseEntity<?> phoneNumberOtpSend(@Valid @RequestBody PhoneRequest phoneRequest) {
+        return ResponseEntity.ok(userServiceImpl.phoneNumberOtpSend(phoneRequest.getPhoneNumber()));
     }
+
+    @PostMapping(FORGOT_PASSWORD)
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        return ResponseEntity.ok(userServiceImpl.forgotPassword(forgotPasswordRequest.getEmailId()));
+    }
+
+    @PostMapping(VERIFY_OTP)
+    public ResponseEntity<?> verifyOtp(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        return ResponseEntity.ok(userServiceImpl.forgotPassword(forgotPasswordRequest.getEmailId()));
+    }
+
+    @PutMapping(RESET_PASSWORD)
+    public ResponseEntity<?> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        return ResponseEntity.ok(userServiceImpl.resetPassword(resetPasswordRequest));
+    }
+
 }

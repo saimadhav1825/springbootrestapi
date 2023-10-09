@@ -48,7 +48,8 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private OTPService otpService;
+    private OptServiceImpl optServiceImpl;
+
 
     @Override
     public BaseResponse createUser(RegistrationRequest registrationRequest) {
@@ -95,9 +96,8 @@ public class UserServiceImpl implements UserService {
                 //IF Phone Number Exist return Response Already Found
                 return new BaseResponse(false, "Already Account Exist With This Phone Number");
             } else {
-                String otp = otpService.generate6DigitOTP();
                 //if Phone Number Not Exist Send Otp To User
-                return new BaseResponse(true, "Otp Sends Successfully To Your Phone Number " + otp);
+                return optServiceImpl.saveOtp("");
             }
         } else throw new PhoneNumberValidationException("Invalid Phone Number");
     }

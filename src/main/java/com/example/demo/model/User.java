@@ -7,6 +7,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Getter
@@ -18,9 +19,8 @@ import java.util.List;
 @Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
     @Column(name = "email_id", unique = true)
     @NotBlank(message = "Enter Your Email")
@@ -38,7 +38,7 @@ public class User {
     private String role;
 
     @Column(name = "userName")
-    private String userName="";
+    private String userName = "";
 
     @Column(name = "phoneNumber")
     private String phoneNumber;

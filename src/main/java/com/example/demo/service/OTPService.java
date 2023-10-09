@@ -1,16 +1,14 @@
 package com.example.demo.service;
 
+import com.example.demo.model.BaseResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
 
 
-@Service
-public class OTPService {
 
-    public String generate6DigitOTP() {
-        Random random = new Random();
-        int otpValue = 100000 + random.nextInt(900000); // Generates a random 6-digit OTP
-        return String.valueOf(otpValue);
-    }
+public interface OTPService {
+
+    BaseResponse saveOtp(String id);
+    String generate6DigitOTP();
 }

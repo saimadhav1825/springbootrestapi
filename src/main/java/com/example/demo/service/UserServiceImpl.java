@@ -47,9 +47,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private OptServiceImpl optServiceImpl;
-
 
     @Override
     public BaseResponse createUser(RegistrationRequest registrationRequest) {
@@ -96,8 +93,8 @@ public class UserServiceImpl implements UserService {
                 //IF Phone Number Exist return Response Already Found
                 return new BaseResponse(false, "Already Account Exist With This Phone Number");
             } else {
-                //if Phone Number Not Exist Send Otp To User
-                return optServiceImpl.saveOtp("");
+
+                return new BaseResponse(false, "Already Account Exist With This Phone Number");
             }
         } else throw new PhoneNumberValidationException("Invalid Phone Number");
     }

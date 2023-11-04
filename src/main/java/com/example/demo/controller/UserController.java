@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static com.example.demo.ApiConstants.*;
 
+//http://localhost:8080/
 @RestController
 @RequestMapping("api/v1/user/")
 public class UserController {
@@ -30,7 +31,7 @@ public class UserController {
     }
 
     @PostMapping(LOGIN)
-    public ResponseEntity<?> login(@RequestBody AuthenticationRequest authRequest) {
+    public ResponseEntity<?> login(@Valid @RequestBody AuthenticationRequest authRequest) {
         return ResponseEntity.ok(userServiceImpl.authenticateAndGetToken(authRequest));
     }
 

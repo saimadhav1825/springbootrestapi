@@ -20,12 +20,12 @@ public class UserController {
     @Autowired
     private UserServiceImpl userServiceImpl;
 
-    @PostMapping("registration")
+    @PostMapping(CREATE_ACCOUNT)
     public ResponseEntity<?> createAccount(@Valid @RequestBody RegistrationRequest registrationRequest) {
         return ResponseEntity.ok(userServiceImpl.createUser(registrationRequest));
     }
 
-    @PostMapping("addDisplayName")
+    @PostMapping(ADD_DISPLAY_NAME)
     public ResponseEntity<?> displayName(@Valid @RequestBody DisplayNameRequest displayNameRequest) {
         return ResponseEntity.ok(userServiceImpl.addUserName(displayNameRequest));
     }
@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.ok(userServiceImpl.authenticateAndGetToken(authRequest));
     }
 
-    @PostMapping("refresh-token")
+    @PostMapping(REFRESH_TOKEN)
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) {
         userServiceImpl.refreshToken(request, response);
     }
